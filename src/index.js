@@ -53,13 +53,13 @@ function getMoreData (event) {
 function getSearchData(event) {
     event.preventDefault();
     
-    searchMore.style.display = "block"
-    searchQuery = event.currentTarget.elements.searchQuery.value
+    searchMore.style.display = "block";
+    searchQuery = event.currentTarget.elements.searchQuery.value;
     gallery.innerHTML = "";
     page = 1;
     fetchSearchEl(searchQuery).then((data) => {
-            const answers = data;
-            const gallarys = answers.map(answer => {
+        const answers = data;
+        const gallarys = answers.map(answer => {
          
             const webformatURL = answer.webformatURL;
             const largeImageURL = answer.largeImageURL;
@@ -68,7 +68,7 @@ function getSearchData(event) {
             const views = answer.views;
             const comments = answer.comments;
             const downloads = answer.downloads;
-            gallery.insertAdjacentHTML("beforeend", 
+            gallery.insertAdjacentHTML("beforeend",
                 `<div class="photo-card">
         <img src="${webformatURL}" width="200" height="120" alt="${tags}" loading="lazy" />
         <div class="info">
@@ -91,10 +91,10 @@ function getSearchData(event) {
         </div>
       </div>`);
             
-        })
+        });
        
-   })
-}
+    });
+};
 const axios = require('axios');
 
 async function fetchSearchEl(searchEl) {
@@ -105,10 +105,10 @@ async function fetchSearchEl(searchEl) {
         Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
    
     }  
-        return response.data.hits
+      return response.data.hits;
     }
   catch {
       searchMore.style.display = "none"
       Notiflix.Notify.info("We're sorry, but you've reached the end of search results.")
     }
-}
+};
