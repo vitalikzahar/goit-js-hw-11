@@ -98,18 +98,18 @@ function getSearchData(event) {
 const axios = require('axios');
 
 async function fetchSearchEl(searchEl) {
-    // try {
+    try {
         const response = await axios(`${BASE_URL}&q=${searchEl}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=40`)
                   page += 1;
           
-    // if (response.data.hits.length === 0) {
-    //     Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
+    if (response.data.hits.length === 0) {
+        Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
    
-    // }  
+    }  
       return response.data.hits;
-    // }
-//   catch {
-//       searchMore.style.display = "none"
-//       Notiflix.Notify.info("We're sorry, but you've reached the end of search results.")
-//     }
+    }
+  catch {
+      searchMore.style.display = "none"
+      Notiflix.Notify.info("We're sorry, but you've reached the end of search results.")
+    }
 };
