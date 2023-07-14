@@ -55,7 +55,8 @@ function getSearchData(event) {
     
     searchMore.style.display = "block"
     searchQuery = event.currentTarget.elements.searchQuery.value
-   gallery.innerHTML = "";
+    gallery.innerHTML = "";
+    page = 1;
     fetchSearchEl(searchQuery).then((data) => {
             const answers = data;
             const gallarys = answers.map(answer => {
@@ -96,15 +97,18 @@ function getSearchData(event) {
 }
 const axios = require('axios');
 
-function fetchSearchEl(searchEl) {
-   return axios(`${BASE_URL}&q=${searchEl}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=40`)
-        .then(response => {
-          page += page;
+async function fetchSearchEl(searchEl) {
+  try{const response = await axios.get(`${BASE_URL}&q=${searchEl}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=40`)
+                  page += 1;
           
-            if (response.status !== 200) {
-                throw new Error(response.status)
-            }
-            
-     return response.data.hits
-        })
+    if (response.data.hits.length === 0) {
+        Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
+   
+    }  
+        return response.data.hits
+    }
+  catch {
+      searchMore.style.display = "none"
+      Notiflix.Notify.info("We're sorry, but you've reached the end of search results.")
+    }
 }
