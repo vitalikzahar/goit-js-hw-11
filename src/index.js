@@ -98,7 +98,8 @@ function getSearchData(event) {
 const axios = require('axios');
 
 async function fetchSearchEl(searchEl) {
-  try{const response = await axios.get(`${BASE_URL}&q=${searchEl}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=40`)
+    // try {
+        const response = await axios.get(`${BASE_URL}&q=${searchEl}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=40`)
                   page += 1;
           
     // if (response.data.hits.length === 0) {
@@ -106,7 +107,7 @@ async function fetchSearchEl(searchEl) {
    
     // }  
       return response.data.hits;
-    }
+    // }
 //   catch {
 //       searchMore.style.display = "none"
 //       Notiflix.Notify.info("We're sorry, but you've reached the end of search results.")
