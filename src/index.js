@@ -14,40 +14,7 @@ searchMore.addEventListener("click", getMoreData)
 
 function getMoreData (event) {
   fetchSearchEl(searchQuery).then((data) => {
-    const answers = data;
-    const gallarys = answers.map(answer => { 
-    const webformatURL = answer.webformatURL;
-    const largeImageURL = answer.largeImageURL;
-    const tags = answer.tags;
-    const likes = answer.likes;
-    const views = answer.views;
-    const comments = answer.comments;
-    const downloads = answer.downloads;
-    gallery.insertAdjacentHTML("beforeend", 
-        `<div class="photo-card">
-<img src="${webformatURL}" width="200" height="120" alt="${tags}" loading="lazy" />
-<div class="info">
-  <p class="info-item">
-    <b>Likes:</b>
-    <b>${likes}</b>
-  </p>
-  <p class="info-item">
-    <b>Views:</b>
-    <b>${views}</b>
-  </p>
-  <p class="info-item">
-    <b>Comments:</b>
-    <b>${comments}</b>
-  </p>
-  <p class="info-item">
-    <b>Downloads:</b>
-    <b>${downloads}</b>
-  </p>
-</div>
-</div>`);
-    
-})
-
+    createMarkup(data)
 })
 }
 function getSearchData(event) {
@@ -58,8 +25,12 @@ function getSearchData(event) {
     gallery.innerHTML = "";
     page = 1;
     fetchSearchEl(searchQuery).then((data) => {
-        const answers = data;
-        const gallarys = answers.map(answer => {
+        createMarkup(data) 
+    });
+};
+
+function createMarkup(answers) {
+     const gallarys = answers.map(answer => {
          
             const webformatURL = answer.webformatURL;
             const largeImageURL = answer.largeImageURL;
@@ -92,9 +63,7 @@ function getSearchData(event) {
       </div>`);
             
         });
-       
-    });
-};
+ }
 const axios = require('axios');
 
 async function fetchSearchEl(searchEl) {
@@ -109,7 +78,7 @@ async function fetchSearchEl(searchEl) {
       return response.data.hits;
     }
   catch {
-      searchMore.style.display = "none"
-      Notiflix.Notify.info("We're sorry, but you've reached the end of search results.")
+        searchMore.style.display = "none";
+        Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
     }
 };
