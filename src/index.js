@@ -30,6 +30,7 @@ function getSearchData(event) {
 };
 
 function createMarkup(answers) {
+    console.log(answers)
      const gallarys = answers.map(answer => {
          
             const webformatURL = answer.webformatURL;
@@ -64,7 +65,7 @@ function createMarkup(answers) {
             
         });
  }
-const axios = require('axios');
+// const axios = require('axios');
 
 async function fetchSearchEl(searchEl) {
     try {
