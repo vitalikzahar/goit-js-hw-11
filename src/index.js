@@ -33,10 +33,12 @@ function getSearchData(event) {
 
 function createMarkup(answers) {
     totalCards += 40;
-    if (totalCards <= answers.totalHits) {
+
+if (answers.hits.length !== 0) {
+        
+        if (totalCards <= answers.totalHits) {
         const gallarys = answers.hits.map(answer => {
-            
-             
+                         
             const webformatURL = answer.webformatURL;
             const largeImageURL = answer.largeImageURL;
             const tags = answer.tags;
@@ -69,12 +71,17 @@ function createMarkup(answers) {
             
          });
        
-    } else {
+       } else {
         
-        searchMore.style.display = "none";
-        Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
-         
+          searchMore.style.display = "none";
+          Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
+            }
+      
+} else {
+    Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
     }
+
+    
     
  }
 async function fetchSearchEl(searchEl) {
@@ -82,9 +89,7 @@ async function fetchSearchEl(searchEl) {
         const response = await axios(`${BASE_URL}&q=${searchEl}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=40`)
                   page += 1;
           
-    if (response.data.hits.length === 0) {
-        Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
-        }  
+    
         
       return response.data;
     }
