@@ -7,6 +7,7 @@ const gallery = document.querySelector(".gallery")
 const searchMore = document.querySelector(".load-more")
 let searchQuery = '';
 let page = 1;
+let totalCards = 0;
 
 form.addEventListener('submit', getSearchData)
 searchMore.addEventListener("click", getMoreData)
@@ -24,15 +25,18 @@ function getSearchData(event) {
     searchQuery = event.currentTarget.elements.searchQuery.value;
     gallery.innerHTML = "";
     page = 1;
+    totalCards = 0;
     fetchSearchEl(searchQuery).then((data) => {
         createMarkup(data) 
     });
 };
 
 function createMarkup(answers) {
-    console.log(answers)
-     const gallarys = answers.map(answer => {
-         
+    totalCards += 40;
+    if (totalCards <= answers.totalHits) {
+        const gallarys = answers.hits.map(answer => {
+            
+             
             const webformatURL = answer.webformatURL;
             const largeImageURL = answer.largeImageURL;
             const tags = answer.tags;
@@ -42,8 +46,8 @@ function createMarkup(answers) {
             const downloads = answer.downloads;
             gallery.insertAdjacentHTML("beforeend",
                 `<div class="photo-card">
-        <img src="${webformatURL}" width="200" height="120" alt="${tags}" loading="lazy" />
-        <div class="info">
+           <img src="${webformatURL}" width="200" height="120" alt="${tags}" loading="lazy" />
+           <div class="info">
           <p class="info-item">
             <b>Likes:</b>
             <b>${likes}</b>
@@ -60,13 +64,19 @@ function createMarkup(answers) {
             <b>Downloads:</b>
             <b>${downloads}</b>
           </p>
-        </div>
-      </div>`);
+          </div>
+         </div>`);
             
-        });
+         });
+       
+    } else {
+        
+        searchMore.style.display = "none";
+        Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
+         
+    }
+    
  }
-// const axios = require('axios');
-
 async function fetchSearchEl(searchEl) {
     try {
         const response = await axios(`${BASE_URL}&q=${searchEl}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=40`)
@@ -74,12 +84,11 @@ async function fetchSearchEl(searchEl) {
           
     if (response.data.hits.length === 0) {
         Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
-   
-    }  
-      return response.data.hits;
+        }  
+        
+      return response.data;
     }
   catch {
-        searchMore.style.display = "none";
-        Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
+        
     }
 };
