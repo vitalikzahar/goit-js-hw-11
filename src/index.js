@@ -21,7 +21,7 @@ function getMoreData (event) {
 function getSearchData(event) {
     event.preventDefault();
     
-    searchMore.style.display = "block";
+    
     searchQuery = event.currentTarget.elements.searchQuery.value;
     gallery.innerHTML = "";
     page = 1;
@@ -36,7 +36,8 @@ function createMarkup(answers) {
 
 if (answers.hits.length !== 0) {
         
-        if (totalCards <= answers.totalHits) {
+    if (totalCards <= answers.totalHits) {
+            searchMore.style.display = "block";
         const gallarys = answers.hits.map(answer => {
                          
             const webformatURL = answer.webformatURL;
